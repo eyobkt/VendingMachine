@@ -9,6 +9,7 @@ public class Change {
     int nickels;
     int dimes;
     int quarters;
+    int dollars;
     
     public Change(int pennies) {
         
@@ -28,5 +29,9 @@ public class Change {
 
     public int getQuarters() {
         return quarters;
+    }
+    
+    public int getDollars() {
+        return dollars;
     }
 }
