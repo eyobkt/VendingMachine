@@ -6,7 +6,11 @@
 package com.sg.vendingmachine.controller;
 
 import com.sg.vendingmachine.dto.Item;
+import com.sg.vendingmachine.service.VendingMachineService;
+import java.math.BigDecimal;
 import java.util.List;
+import ui.UserIO;
+import ui.UserIOConsoleImpl;
 
 /**
  *
@@ -25,9 +29,9 @@ public class VendingMachineController {
     private VendingView view;
     //private ItemDao dao;
     //replacing dao with service instead
-    private VendingService service; //variable of iterface?? oh so you can pass in any child type of that implements this interface.
+    private VendingMachineService service; //variable of iterface?? oh so you can pass in any child type of that implements this interface.
     
-    public VendingMachineController(VendingService service, VendingView myView) {
+    public VendingMachineController(VendingMachineService service, VendingView myView) {
         //this.dao = myDao;
         this.service = service;
         this.view = myView;
@@ -46,12 +50,16 @@ public class VendingMachineController {
                         case 1:
                             listItems();
                             break;
+                            
+                        case 2:
+                            putMoney();
+                            break;
                         
-                        case 4:
-                            removeItem();
+                        case 3:
+                            buyItem();
                             break;
                        
-                        case 6:
+                        case 4:
                             keepGoing = false;
                             break;
                             
@@ -80,17 +88,22 @@ public class VendingMachineController {
         view.displayExitBanner();
     }
     
-    private void listItems() throws InsufficientFundsException{
+    private void listItems(){
         //List<Item> ItemList = dao.getAllItem();
-        List<Item> ItemList = service.getAllItem();
-        view.displayStudentList(ItemList);
+        List<Item> ItemList = service.listItems();
+        view.displayItemList(ItemList);
     }
     
-    private void removeItem() throws InsufficientFundsException {
+    private void buyItem(){
         //view.displayRemoveStudentBanner();
-        String studentId = view.getItemChoice();
-        Item removedStudent = service.removeItem(studentId);
-        view.displayRemoveResult(removedStudent);
+        int itemId = view.getItemChoice();
+        Item removedItem = service.buyItem(itemId);
+        view.displayRemoveResult(removedItem);
+    }
+    
+    private void putMoney(){
+        String moneyAmount = view.getMoney();
+        service.putMoney(moneyAmount);
     }
 
    
