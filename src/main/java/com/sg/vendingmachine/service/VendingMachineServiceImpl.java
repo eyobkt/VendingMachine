@@ -9,6 +9,7 @@ import com.sg.vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -33,11 +34,9 @@ public class VendingMachineServiceImpl implements VendingMachineService {
             
             for (Integer itemId : allItems.keySet()) {
                 if (allItems.get(itemId).getNumberOfItems() == 0) {
-                    vendingMachineDao.removeItem(itemId);
+                    allItems.remove(itemId);
                 }
             }
-        
-            allItems = vendingMachineDao.getItemMap();
         } catch (VendingMachinePersistenceException ex) {
             ex.printStackTrace();
         }
@@ -50,23 +49,39 @@ public class VendingMachineServiceImpl implements VendingMachineService {
         }
     }
     
-    public void putMoney(BigDecimal moneyAmount) {
-        this.moneyAmount = this.moneyAmount.add(moneyAmount);
+    @Override
+    public void putMoney(String moneyAmount) {
+        BigDecimal moneyToAdd = new BigDecimal(moneyAmount);
+        moneyToAdd.setScale(2, RoundingMode.HALF_UP);
+    
+        this.moneyAmount = this.moneyAmount.add(moneyToAdd);
     }
     
     @Override
-    public Change buyItem(BigDecimal moneyAmount, int itemId) throws InsufficientFundsException {        
+    public Change buyItem(int itemId) throws InsufficientFundsException, 
+            VendingMachineInvalidIdException, VendingMachineItemOutOfStockException {     
+        
         Item item = null;
         
         try {
-            item = vendingMachineDao.getItem(itemId).get();
+            Optional<Item> optionalItem = vendingMachineDao.getItem(itemId);
+            
+            if (optionalItem.isPresent()) {
+                item = optionalItem.get();
+            } else {
+                throw new VendingMachineInvalidIdException("Item doesn't exist");
+            }
+          
+            if (item.getNumberOfItems() == 0) {
+                throw new VendingMachineItemOutOfStockException("Item out of stock");
+            }
+
         } catch (VendingMachinePersistenceException ex) {
            ex.printStackTrace();
         }
         
-        setMoneyAmountToZero();
-        
         if (item.getCost().compareTo(moneyAmount) > 0) {
+            setMoneyAmountToZero();
             throw new InsufficientFundsException("There are not enough funds to purchase this item");
         } else {
             try {
@@ -77,7 +92,12 @@ public class VendingMachineServiceImpl implements VendingMachineService {
                 ex.printStackTrace();
             }
             
-            return new Change(item.getCost());
+            BigDecimal changeAmount = moneyAmount.subtract(item.getCost());
+            changeAmount.setScale(2, RoundingMode.HALF_UP);
+            
+            setMoneyAmountToZero();
+                    
+            return new Change(changeAmount);
         }
     } 
     

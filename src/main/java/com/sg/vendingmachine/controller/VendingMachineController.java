@@ -1,5 +1,7 @@
 package com.sg.vendingmachine.controller;
 
+import com.sg.vendingmachine.dao.VendingMachineInvalidIdException;
+import com.sg.vendingmachine.dao.VendingMachineItemOutOfStockException;
 import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Item;
 import com.sg.vendingmachine.service.InsufficientFundsException;
@@ -70,20 +72,17 @@ public class VendingMachineController {
     }
     
     private void buyItem(){        
-        boolean hasErrors = false;
+        int itemId = view.getItemChoice();
         
-        do {
-            int itemId = view.getItemChoice();
-            try {
-                Change myChange = service.buyItem(itemId);    
-                
-                view.printChange(myChange, itemId);
-                hasErrors = false;
-            } catch (InsufficientFundsException | NoItemInventoryException e) { //these two exceptions should be in buyItem
-                hasErrors = true;
-                view.displayErrorMessage(e.getMessage());
-            }
-        } while (hasErrors);
+        
+        
+        try {
+            Change myChange = service.buyItem(itemId);    
+
+            view.printChange(myChange, itemId);
+        } catch (InsufficientFundsException | VendingMachineItemOutOfStockException | VendingMachineInvalidIdException e) { 
+            view.displayErrorMessage(e.getMessage());
+        }
     }
     
     private void putMoney(){

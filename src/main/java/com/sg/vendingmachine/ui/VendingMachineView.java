@@ -42,7 +42,8 @@ public class VendingMachineView {
         Set<Integer> keys = inventory.keySet();
         for (Integer itemID : keys) {
             Item item = inventory.get(itemID);
-            System.out.println(itemID.toString() + "  " + item.getName() + " .... " + "$" +item.getCost().toString());
+            System.out.println(itemID.toString() + "  " + item.getName() + " .... " + "$" +item.getCost().toString() + 
+                    " " + item.getNumberOfItems() + " left");
         }
         
         System.out.println("");
@@ -110,7 +111,7 @@ public class VendingMachineView {
             if (changeMessage.length() > 0) {
                 changeMessage += ", ";
             }
-            changeMessage += pennyAmount + "penny(s)";
+            changeMessage += pennyAmount + " penny(s)";
         }
         
         io.print(changeMessage);
