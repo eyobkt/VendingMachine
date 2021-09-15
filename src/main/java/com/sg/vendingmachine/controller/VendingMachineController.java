@@ -108,7 +108,7 @@ public class VendingMachineController {
             try {
                 Change myChange = service.buyItem(itemId);    
                 
-                view.displayCreateSuccessBanner(myChange, itemId);
+                view.printChange(myChange, itemId);
                 hasErrors = false;
             } catch (InsufficientFundsException | NoItemInventoryException e) { //these two exceptions should be in buyItem
                 hasErrors = true;

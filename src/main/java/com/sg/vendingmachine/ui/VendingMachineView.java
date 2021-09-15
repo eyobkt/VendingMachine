@@ -8,6 +8,8 @@ package com.sg.vendingmachine.ui;
 import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Item;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -34,11 +36,13 @@ public class VendingMachineView {
         
     }
     
-    public void displayItemList(List<Item> inventory) {
+    public void displayItemList(Map<Integer, Item> inventory) {
         io.print("Today, we are offering the below items: ");
-        int i = 1;
-        for (Item item : inventory) {
-            System.out.println(i + "  " + item.getName() + " .... " + "$" +item.getCost().toString());
+        //int i = 1;
+        Set<Integer> keys = inventory.keySet();
+        for (Integer itemID : keys) {
+            Item item = inventory.get(itemID);
+            System.out.println(itemID.toString() + "  " + item.getName() + " .... " + "$" +item.getCost().toString());
         }
         
         System.out.println("");
@@ -68,9 +72,9 @@ public class VendingMachineView {
         io.print("Current deposit available: $" + curDeposit);
     }
     
-    public void printChange(Change change) {
+    public void printChange(Change change, int itemID) {
         // successful purchase, print change
-        io.print("The item is being dropped. Here are your changes: ");
+        io.print("The item " + itemID +" is being dropped. Here are your changes: ");
         String changeMessage = "";
         int dollarAmount = change.getDollars();
         if (dollarAmount > 0) {
