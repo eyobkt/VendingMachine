@@ -1,108 +1,77 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sg.vendingmachine.controller;
 
 import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Item;
 import com.sg.vendingmachine.service.InsufficientFundsException;
-import com.sg.vendingmachine.service.NoItemInventoryException;
+import com.sg.vendingmachine.service.NoRemainingItemsException;
 import com.sg.vendingmachine.service.VendingMachineService;
-import java.math.BigDecimal;
-import java.util.List;
-import com.sg.vendingmachine.ui.UserIO;
-import com.sg.vendingmachine.ui.UserIOConsoleImpl;
 import com.sg.vendingmachine.ui.VendingMachineView;
+import java.util.Map;
 
 /**
  *
  * @author Eyob
  */
-public class VendingMachineController {
-    
-    /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
-*/
-    
-    private UserIO io = new UserIOConsoleImpl();
-    
+public class VendingMachineController {    
     private VendingMachineView view;
-    //private ItemDao dao;
-    //replacing dao with service instead
-    private VendingMachineService service; //variable of iterface?? oh so you can pass in any child type of that implements this interface.
+    private VendingMachineService service; 
     
     public VendingMachineController(VendingMachineService service, VendingMachineView myView) {
-        //this.dao = myDao;
         this.service = service;
         this.view = myView;
-    }
-    
+    }    
     
     public void run(){
-            boolean keepGoing = true;
-            int menuSelection = 0;
-            try {
-                while (keepGoing) {
+        boolean keepGoing = true;
+        int menuSelection = 0;
 
-                    menuSelection = getMenuSelection();
+        try {
+            while (keepGoing) {
+                menuSelection = getMenuSelection();
 
-                    switch (menuSelection) {
-                        case 1:
-                            listItems();
-                            break;
-                            
-                        case 2:
-                            putMoney();
-                            break;
-                        
-                        case 3:
-                            buyItem();
-                            break;
-                       
-                        case 4:
-                            keepGoing = false;
-                            break;
-                            
-                        default:
-                            unknownCommand();
-                    }
-
+                switch (menuSelection) {
+                    case 1:
+                        listItems();
+                        break;
+                    case 2:
+                        putMoney();
+                        break;
+                    case 3:
+                        buyItem();
+                        break;
+                    case 4:
+                        keepGoing = false;
+                        break;
+                    default:
+                        unknownCommand();
                 }
-                exitMessage();
-            } catch (Exception e) {
-                view.displayErrorMessage(e.getMessage());
             }
-            }
+            
+            exitMessage();
+        } catch (Exception e) {
+            view.displayErrorMessage(e.getMessage());
+        }
+    }
     
-    
-    private int getMenuSelection() { //all function in controller are private because only called in here
+    private int getMenuSelection() { 
         return view.printMenuAndGetSelection();
     }
-    
-    
-    private void unknownCommand() {
-        view.displayUnknownCommandBanner();
-    }
 
-    private void exitMessage() {
-        view.displayExitBanner();
-    }
-    
     private void listItems(){
-        Map<Integer, Item> ItemMap = service.listItems(); //returns a map, the view needs to handle print out this map with item id
-        //List<Item> ItemList = service.listItems();
+        Map<Integer, Item> ItemMap = null;
+        
+        try {
+            ItemMap = service.listItems(); //returns a map, the view needs to handle print out this map with item id
+        } catch (NoRemainingItemsException ex) {
+            view.displayErrorMessage(ex.getMessage());
+        }
+     
         view.displayItemList(ItemMap);
     }
     
-    private void buyItem(){
-        //view.displayRemoveStudentBanner();
-        
-        
+    private void buyItem(){        
         boolean hasErrors = false;
+        
         do {
             int itemId = view.getItemChoice();
             try {
@@ -122,6 +91,11 @@ public class VendingMachineController {
         service.putMoney(moneyAmount);
     }
 
-   
+    private void unknownCommand() {
+        view.displayUnknownCommandBanner();
+    }
     
+     private void exitMessage() {
+        view.displayExitBanner();
+    }
 }

@@ -8,10 +8,7 @@ import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -28,10 +25,18 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     }
     
     @Override
-    public Map<Integer, Item> getMenuSelection() throws NoRemainingItemsException {        
+    public Map<Integer, Item> listItems() throws NoRemainingItemsException {        
         Map<Integer, Item> allItems = null;
         
         try {
+            allItems = vendingMachineDao.getItemMap();
+            
+            for (Integer itemId : allItems.keySet()) {
+                if (allItems.get(itemId).getNumberOfItems() == 0) {
+                    vendingMachineDao.removeItem(itemId);
+                }
+            }
+        
             allItems = vendingMachineDao.getItemMap();
         } catch (VendingMachinePersistenceException ex) {
             ex.printStackTrace();
@@ -43,12 +48,6 @@ public class VendingMachineServiceImpl implements VendingMachineService {
         } else {
             return allItems;            
         }
-    }
-    
-    @Override
-    public Map<Integer, Item> listItems() throws NoRemainingItemsException {
-        
-        return getMenuSelection();
     }
     
     public void putMoney(BigDecimal moneyAmount) {
@@ -83,7 +82,7 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     } 
     
     private void setMoneyAmountToZero() {
-        this.moneyAmount = new BigDecimal("0");
-        this.moneyAmount.setScale(2, RoundingMode.HALF_UP);
+        moneyAmount = new BigDecimal("0");
+        moneyAmount.setScale(2, RoundingMode.HALF_UP);
     }
 }

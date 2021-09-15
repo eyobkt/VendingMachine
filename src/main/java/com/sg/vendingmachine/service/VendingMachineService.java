@@ -9,9 +9,7 @@ import java.util.Map;
  *
  * @author Eyob
  */
-public interface VendingMachineService {
-    Map<Integer, Item> getMenuSelection() throws NoRemainingItemsException;
-    
+public interface VendingMachineService {    
     Map<Integer, Item> listItems() throws NoRemainingItemsException;
     
     void putMoney(BigDecimal moneyAmount);
