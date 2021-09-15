@@ -1,19 +1,20 @@
 package com.sg.vendingmachine.service;
 
-import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Item;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Eyob
  */
 public interface VendingMachineService {
-    List<Item> listItems() throws NoRemainingItemsException, 
-            VendingMachinePersistenceException;
+    Map<Integer, Item> getMenuSelection() throws NoRemainingItemsException;
     
-    Change buyItem(BigDecimal amount, int itemId) throws InsufficientFundsException, 
-            VendingMachinePersistenceException;
+    Map<Integer, Item> listItems() throws NoRemainingItemsException;
+    
+    void putMoney(BigDecimal moneyAmount);
+    
+    Change buyItem(BigDecimal amount, int itemId) throws InsufficientFundsException;
 }

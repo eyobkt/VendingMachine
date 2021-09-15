@@ -1,12 +1,17 @@
 package com.sg.vendingmachine.service;
 
 import com.sg.vendingmachine.dao.VendingMachineDao;
+import com.sg.vendingmachine.dao.VendingMachineInvalidIdException;
+import com.sg.vendingmachine.dao.VendingMachineItemOutOfStockException;
 import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,10 +28,14 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     }
     
     @Override
-    public List<Item> listItems() throws NoRemainingItemsException, 
-            VendingMachinePersistenceException {
+    public Map<Integer, Item> getMenuSelection() throws NoRemainingItemsException {        
+        Map<Integer, Item> allItems = null;
         
-        List<Item> allItems = vendingMachineDao.getAllItems();
+        try {
+            allItems = vendingMachineDao.getItemMap();
+        } catch (VendingMachinePersistenceException ex) {
+            ex.printStackTrace();
+        }
         
         if (allItems.isEmpty()) {
             throw new NoRemainingItemsException("Sorry, there are no remaining "
@@ -36,22 +45,39 @@ public class VendingMachineServiceImpl implements VendingMachineService {
         }
     }
     
+    @Override
+    public Map<Integer, Item> listItems() throws NoRemainingItemsException {
+        
+        return getMenuSelection();
+    }
+    
     public void putMoney(BigDecimal moneyAmount) {
         this.moneyAmount = this.moneyAmount.add(moneyAmount);
     }
     
     @Override
-    public Change buyItem(BigDecimal moneyAmount, int itemId) throws InsufficientFundsException, 
-            VendingMachinePersistenceException {
+    public Change buyItem(BigDecimal moneyAmount, int itemId) throws InsufficientFundsException {        
+        Item item = null;
         
-        Item item = vendingMachineDao.getItem(itemId).get();
+        try {
+            item = vendingMachineDao.getItem(itemId).get();
+        } catch (VendingMachinePersistenceException ex) {
+           ex.printStackTrace();
+        }
         
         setMoneyAmountToZero();
         
         if (item.getCost().compareTo(moneyAmount) > 0) {
             throw new InsufficientFundsException("There are not enough funds to purchase this item");
         } else {
-            vendingMachineDao.reduceItemInventory(itemId);
+            try {
+                vendingMachineDao.reduceItemInventory(itemId);
+            } catch (VendingMachinePersistenceException | VendingMachineInvalidIdException | 
+                    VendingMachineItemOutOfStockException ex) {
+                
+                ex.printStackTrace();
+            }
+            
             return new Change(item.getCost());
         }
     } 
