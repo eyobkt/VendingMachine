@@ -93,9 +93,9 @@ public class VendingMachineController {
     }
     
     private void listItems(){
-        //List<Item> ItemList = dao.getAllItem();
-        List<Item> ItemList = service.listItems();
-        view.displayItemList(ItemList);
+        Map<Integer, Item> ItemMap = service.listItems(); //returns a map, the view needs to handle print out this map with item id
+        //List<Item> ItemList = service.listItems();
+        view.displayItemList(ItemMap);
     }
     
     private void buyItem(){
