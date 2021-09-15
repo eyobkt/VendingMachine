@@ -21,10 +21,20 @@ public class VendingMachineView {
         this.io = io;
     }
     
-    public int printMenuAndGetSelection(List<Item> inventory) {
+    public int printMenuAndGetSelection() {
         // 1 - continue to purchase
         // 2 - exit
         io.print("Welcome to Vending Machine");
+        io.print("1. List Available Items");
+        io.print("2. Insert Money");
+        io.print("3. Choose an Item");
+        io.print("4. Exit");
+
+        return io.readInt("Please select from the above choices.", 1, 4);
+        
+    }
+    
+    public void displayItemList(List<Item> inventory) {
         io.print("Today, we are offering the below items: ");
         int i = 1;
         for (Item item : inventory) {
@@ -32,8 +42,6 @@ public class VendingMachineView {
         }
         
         System.out.println("");
-        //System.out.println("You may perform the fo");
-        return io.readInt("Please enter 1 to proceed, or enter 2 to exit", 1, 2);
     }
     
     public double printMoneyDeposit() {
