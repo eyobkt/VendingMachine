@@ -14,5 +14,5 @@ public interface VendingMachineService {
     
     void putMoney(BigDecimal moneyAmount);
     
-    Change buyItem(BigDecimal amount, int itemId) throws InsufficientFundsException;
+    Change buyItem(BigDecimal amount, int itemId) throws InsufficientFundsException, NoRemainingItemsException;
 }

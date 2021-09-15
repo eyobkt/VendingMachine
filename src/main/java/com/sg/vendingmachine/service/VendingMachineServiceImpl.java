@@ -55,7 +55,7 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     }
     
     @Override
-    public Change buyItem(BigDecimal moneyAmount, int itemId) throws InsufficientFundsException {        
+    public Change buyItem(BigDecimal moneyAmount, int itemId) throws InsufficientFundsException, NoRemainingItemsException {        
         Item item = null;
         
         try {

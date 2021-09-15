@@ -24,6 +24,7 @@ public class VendingMachineController {
     public void run(){
         boolean keepGoing = true;
         int menuSelection = 0;
+        listItems();
 
         try {
             while (keepGoing) {
@@ -79,7 +80,7 @@ public class VendingMachineController {
                 
                 view.printChange(myChange, itemId);
                 hasErrors = false;
-            } catch (InsufficientFundsException | NoItemInventoryException e) { //these two exceptions should be in buyItem
+            } catch (InsufficientFundsException | NoRemainingItemsException e) { //these two exceptions should be in buyItem
                 hasErrors = true;
                 view.displayErrorMessage(e.getMessage());
             }
