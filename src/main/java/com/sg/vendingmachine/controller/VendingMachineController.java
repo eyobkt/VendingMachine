@@ -12,9 +12,9 @@ import com.sg.vendingmachine.service.NoItemInventoryException;
 import com.sg.vendingmachine.service.VendingMachineService;
 import java.math.BigDecimal;
 import java.util.List;
-import ui.UserIO;
-import ui.UserIOConsoleImpl;
-import ui.VendingMachineView;
+import com.sg.vendingmachine.ui.UserIO;
+import com.sg.vendingmachine.ui.UserIOConsoleImpl;
+import com.sg.vendingmachine.ui.VendingMachineView;
 
 /**
  *

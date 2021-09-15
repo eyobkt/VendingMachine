@@ -11,9 +11,9 @@ import java.util.List;
  * @author Eyob
  */
 public interface VendingMachineService {
-    List<Item> getAllItems() throws NoRemainingItemsException, 
+    List<Item> listItems() throws NoRemainingItemsException, 
             VendingMachinePersistenceException;
     
-    Change purchaseItem(BigDecimal amount, int itemId) throws InsufficientFundsException, 
-            NoItemInventoryException, VendingMachinePersistenceException;
+    Change buyItem(BigDecimal amount, int itemId) throws InsufficientFundsException, 
+            VendingMachinePersistenceException;
 }
