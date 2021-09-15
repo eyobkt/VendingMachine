@@ -44,9 +44,9 @@ public class VendingMachineView {
         System.out.println("");
     }
     
-    public double getMoney() {
+    public String getMoney() {
         // ask user the amount of money to input
-        return io.readDouble("Please insert money: ");
+        return io.readString("Please insert money: ");
     }
     
     public int getItemChoice() {
@@ -56,6 +56,11 @@ public class VendingMachineView {
     
     public int printSelectionError() {
         return io.readInt("Invalid input. Please enter the ID of the item you want to purchase: ");
+    }
+    
+    public void displayErrorMessage(String errorMsg) {
+        io.print("=== ERROR ===");
+        io.print(errorMsg);
     }
     
     public void printInsufficientFund(String curDeposit) {
@@ -108,7 +113,7 @@ public class VendingMachineView {
 
     }
     
-    public void printExitMessage() {
+    public void displayExitBanner() {
         // transaction finishes, exit program
         io.print("Thank you for your purchase!");
         io.print("Have a nice day!");
