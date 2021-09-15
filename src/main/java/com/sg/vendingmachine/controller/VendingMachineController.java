@@ -5,6 +5,7 @@
  */
 package com.sg.vendingmachine.controller;
 
+import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Item;
 import com.sg.vendingmachine.service.InsufficientFundsException;
 import com.sg.vendingmachine.service.NoItemInventoryException;
@@ -105,8 +106,9 @@ public class VendingMachineController {
         do {
             int itemId = view.getItemChoice();
             try {
-                Item removedItem = service.buyItem(itemId);
-                view.displayCreateSuccessBanner();
+                Change myChange = service.buyItem(itemId);    
+                
+                view.displayCreateSuccessBanner(myChange, itemId);
                 hasErrors = false;
             } catch (InsufficientFundsException | NoItemInventoryException e) { //these two exceptions should be in buyItem
                 hasErrors = true;
