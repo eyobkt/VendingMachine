@@ -28,16 +28,21 @@ public class VendingMachineServiceImpl implements VendingMachineService {
             throw new NoRemainingItemsException("Sorry, there are no remaining "
                     + "items in the vending machine");
         } else {
-            return vendingMachineDao.getAllItems();            
+            return allItems;            
         }
     }
     
     @Override
     public Change purchaseItem(BigDecimal amount, int itemId) throws InsufficientFundsException, 
-            NoItemInventoryException, VendingMachinePersistenceException {
+            VendingMachinePersistenceException {
         
-        Item item = vendingMachineDao.getItem(itemId);
+        Item item = vendingMachineDao.getItem(itemId).get();
         
-        
+        if (item.getCost().compareTo(amount) > 0) {
+            throw new InsufficientFundsException("There are not enough funds to purchase this item");
+        } else {
+            vendingMachineDao.reduceItemInventory(itemId);
+            return new Change(item.getCost());
+        }
     } 
 }
