@@ -1,7 +1,7 @@
 package com.sg.vendingmachine.dao;
 
 import com.sg.vendingmachine.dto.Item;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface VendingMachineDao {
@@ -11,7 +11,7 @@ public interface VendingMachineDao {
     
     Optional<Item> getItem(int id) throws VendingMachinePersistenceException;
     
-    List<Item> getAllItems() throws VendingMachinePersistenceException;
+    Map<Integer, Item> getItemMap() throws VendingMachinePersistenceException;
     
     void reduceItemInventory(int id) 
             throws VendingMachinePersistenceException,

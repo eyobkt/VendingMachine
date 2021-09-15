@@ -8,9 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
@@ -51,11 +49,11 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         loadItems();
         return Optional.ofNullable(items.get(id));
     }
-
+    
     @Override
-    public List<Item> getAllItems() throws VendingMachinePersistenceException {
+    public Map<Integer, Item> getItemMap() throws VendingMachinePersistenceException {
         loadItems();
-        return new ArrayList(items.values());
+        return new HashMap(items);
     }
 
     @Override
