@@ -26,6 +26,7 @@ public class VendingMachineController {
     public void run(){
         boolean keepGoing = true;
         int menuSelection = 0;
+        listItems();
 
         try {
             while (keepGoing) {
@@ -73,8 +74,6 @@ public class VendingMachineController {
     
     private void buyItem(){        
         int itemId = view.getItemChoice();
-        
-        
         
         try {
             Change myChange = service.buyItem(itemId);    
