@@ -2,7 +2,7 @@
 * The Software Guild
 * Copyright (C) 2020 Wiley edu LLC - All Rights Reserved
 *********************************/
-package ui;
+package com.sg.vendingmachine.ui;
 
 /**
  * TSG Official Implementation of the UserIO interface
