@@ -3,11 +3,6 @@ package com.sg.vendingmachine.dto;
 import java.math.BigDecimal;
 
 public class Change {
-    private static final int PENNIES_IN_ONE_DOLLAR = 100;
-    private static final int PENNIES_IN_ONE_QUARTER = 25;
-    private static final int PENNIES_IN_ONE_DIME = 10;
-    private static final int PENNIES_IN_ONE_NICKEL = 5;
-    
     private int pennies;
     private int nickels;
     private int dimes;
@@ -15,17 +10,17 @@ public class Change {
     private int dollars;
     
     public Change(int pennies) {
-        this.dollars = pennies / PENNIES_IN_ONE_DOLLAR;
-        pennies %= PENNIES_IN_ONE_DOLLAR;
+        this.dollars = pennies / PenniesInOne.DOLLAR.getValue();
+        pennies %= PenniesInOne.DOLLAR.getValue();
         
-        this.quarters = pennies / PENNIES_IN_ONE_QUARTER;
-        pennies %= PENNIES_IN_ONE_QUARTER;
+        this.quarters = pennies / PenniesInOne.QUARTER.getValue();
+        pennies %= PenniesInOne.QUARTER.getValue();
         
-        this.dimes = pennies / PENNIES_IN_ONE_DIME;
-        pennies %= PENNIES_IN_ONE_DIME;
+        this.dimes = pennies / PenniesInOne.DIME.getValue();
+        pennies %= PenniesInOne.DIME.getValue();
         
-        this.nickels = pennies / PENNIES_IN_ONE_NICKEL;
-        pennies %= PENNIES_IN_ONE_NICKEL;
+        this.nickels = pennies / PenniesInOne.NICKEL.getValue();
+        pennies %= PenniesInOne.NICKEL.getValue();
         
         this.pennies = pennies;
     }
