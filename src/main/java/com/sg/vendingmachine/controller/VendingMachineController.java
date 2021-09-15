@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import ui.UserIO;
 import ui.UserIOConsoleImpl;
+import ui.VendingMachineView;
 
 /**
  *
@@ -28,12 +29,12 @@ public class VendingMachineController {
     
     private UserIO io = new UserIOConsoleImpl();
     
-    private VendingView view;
+    private VendingMachineView view;
     //private ItemDao dao;
     //replacing dao with service instead
     private VendingMachineService service; //variable of iterface?? oh so you can pass in any child type of that implements this interface.
     
-    public VendingMachineController(VendingMachineService service, VendingView myView) {
+    public VendingMachineController(VendingMachineService service, VendingMachineView myView) {
         //this.dao = myDao;
         this.service = service;
         this.view = myView;
