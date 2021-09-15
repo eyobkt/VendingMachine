@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class VendingMachineDaoFileImpl implements VendingMachineDao {
-    private static final String DELIMITER = "||";
+    private static final String DELIMITER = "--";
     private static final String ITEM_DELIMITER = "::";
 
     private final String vendingMachineFile;
