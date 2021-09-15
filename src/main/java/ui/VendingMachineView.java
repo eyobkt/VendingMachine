@@ -44,12 +44,12 @@ public class VendingMachineView {
         System.out.println("");
     }
     
-    public double printMoneyDeposit() {
+    public double getMoney() {
         // ask user the amount of money to input
         return io.readDouble("Please insert money: ");
     }
     
-    public int printItemSelection() {
+    public int getItemChoice() {
         // ask user for the item ID
         return io.readInt("Please enter the ID of the item you want to purchase: ");
     }
