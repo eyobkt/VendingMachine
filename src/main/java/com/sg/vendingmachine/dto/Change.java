@@ -10,16 +10,16 @@ public class Change {
     private int dollars;
     
     public Change(int pennies) {
-        this.dollars = pennies / PenniesInOne.DOLLAR.getValue();
+        dollars = pennies / PenniesInOne.DOLLAR.getValue();
         pennies %= PenniesInOne.DOLLAR.getValue();
         
-        this.quarters = pennies / PenniesInOne.QUARTER.getValue();
+        quarters = pennies / PenniesInOne.QUARTER.getValue();
         pennies %= PenniesInOne.QUARTER.getValue();
         
-        this.dimes = pennies / PenniesInOne.DIME.getValue();
+        dimes = pennies / PenniesInOne.DIME.getValue();
         pennies %= PenniesInOne.DIME.getValue();
         
-        this.nickels = pennies / PenniesInOne.NICKEL.getValue();
+        nickels = pennies / PenniesInOne.NICKEL.getValue();
         pennies %= PenniesInOne.NICKEL.getValue();
         
         this.pennies = pennies;
