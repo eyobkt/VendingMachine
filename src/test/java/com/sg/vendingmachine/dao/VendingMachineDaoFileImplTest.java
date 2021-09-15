@@ -3,7 +3,7 @@ package com.sg.vendingmachine.dao;
 import com.sg.vendingmachine.dto.Item;
 import java.io.FileWriter;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,23 +29,23 @@ public class VendingMachineDaoFileImplTest {
     }
     
     @Test
-    public void testAddGetAllItems() throws Exception {
+    public void testAddGetItemMap() throws Exception {
         Item firstItem = new Item("chocolate bar", new BigDecimal("2.25"), 5);
         Item secondItem = new Item("cookie", new BigDecimal("1.75"), 3);
         
         dao.addItem(0, firstItem);
         dao.addItem(1, secondItem);
-        List<Item> allItems = dao.getAllItems();
+        Map allItems = dao.getItemMap();
         
-        // Check List
-        assertNotNull(allItems, "allItems list must not null");
-        assertEquals(2, allItems.size(),"allItems list should contain two items");
+        // Check Map
+        assertNotNull(allItems, "allItems map must not null");
+        assertEquals(2, allItems.size(),"allItems map should contain two items");
         
         // Check Items
-        assertTrue(dao.getAllItems().contains(firstItem),
-                "allItems list should include the firstItem");
-        assertTrue(dao.getAllItems().contains(secondItem),
-                "allItems list should include the firstItem");
+        assertTrue(dao.getItemMap().containsValue(firstItem),
+                "allItems map should include the firstItem");
+        assertTrue(dao.getItemMap().containsValue(secondItem),
+                "allItems map should include the firstItem");
     }
     
     @Test
