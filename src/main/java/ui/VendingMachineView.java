@@ -119,6 +119,10 @@ public class VendingMachineView {
         io.print("Have a nice day!");
     }
     
+    public void displayUnknownCommandBanner() {
+        io.print("Unknown Command!!!");
+    }
+    
     
     
     
