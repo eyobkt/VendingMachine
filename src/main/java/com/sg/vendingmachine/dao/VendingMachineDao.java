@@ -9,6 +9,8 @@ public interface VendingMachineDao {
             throws VendingMachinePersistenceException,
                    VendingMachineDuplicateIdException;
     
+    void removeItem(int id) throws VendingMachinePersistenceException;
+    
     Optional<Item> getItem(int id) throws VendingMachinePersistenceException;
     
     Map<Integer, Item> getItemMap() throws VendingMachinePersistenceException;

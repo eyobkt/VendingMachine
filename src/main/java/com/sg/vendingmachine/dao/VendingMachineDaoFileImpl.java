@@ -43,6 +43,13 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         
         writeItems();
     }
+    
+    @Override
+    public void removeItem(int id) throws VendingMachinePersistenceException {
+        loadItems();
+        items.remove(id);
+        writeItems();
+    }
 
     @Override
     public Optional<Item> getItem(int id) throws VendingMachinePersistenceException {
