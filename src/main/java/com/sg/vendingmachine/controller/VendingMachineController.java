@@ -6,6 +6,8 @@
 package com.sg.vendingmachine.controller;
 
 import com.sg.vendingmachine.dto.Item;
+import com.sg.vendingmachine.service.InsufficientFundsException;
+import com.sg.vendingmachine.service.NoItemInventoryException;
 import com.sg.vendingmachine.service.VendingMachineService;
 import java.math.BigDecimal;
 import java.util.List;
@@ -69,7 +71,7 @@ public class VendingMachineController {
 
                 }
                 exitMessage();
-            } catch (InsufficientFundsException e) {
+            } catch (Exception e) {
                 view.displayErrorMessage(e.getMessage());
             }
             }
@@ -96,9 +98,20 @@ public class VendingMachineController {
     
     private void buyItem(){
         //view.displayRemoveStudentBanner();
-        int itemId = view.getItemChoice();
-        Item removedItem = service.buyItem(itemId);
-        view.displayRemoveResult(removedItem);
+        
+        
+        boolean hasErrors = false;
+        do {
+            int itemId = view.getItemChoice();
+            try {
+                Item removedItem = service.buyItem(itemId);
+                view.displayCreateSuccessBanner();
+                hasErrors = false;
+            } catch (InsufficientFundsException | NoItemInventoryException e) { //these two exceptions should be in buyItem
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
     }
     
     private void putMoney(){
