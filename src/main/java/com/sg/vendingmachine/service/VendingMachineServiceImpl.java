@@ -31,8 +31,11 @@ public class VendingMachineServiceImpl implements VendingMachineService {
         
         try {
             allItems = vendingMachineDao.getItemMap();
+            ListIterator<Integer> idIterator = new ArrayList<Integer>(allItems.keySet()).listIterator();
             
-            for (Integer itemId : allItems.keySet()) {
+            while (idIterator.hasNext()) {
+                Integer itemId = idIterator.next();
+  
                 if (allItems.get(itemId).getNumberOfItems() == 0) {
                     allItems.remove(itemId);
                 }
